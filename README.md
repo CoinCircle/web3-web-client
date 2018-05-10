@@ -1,10 +1,10 @@
-### Web terminal emulator, powered by React <3
+![demo terminal js](https://github.com/coincircle/web3-web-client/blob/master/demo/demo.jpg?raw=true)
 
-#### TODOs
+# Web3 Web Client
+Explore the [ethereum web3 library](http://web3js.readthedocs.io/en/1.0/index.html) from your browser.
 
- - [ ] History on key up/down
- - [ ] Commands CSS
+## CallBacks
+Some functions ask for a callback. For instance `web3.eth.getBlock(blockHashOrBlockNumber [, returnTransactionObjects] [, callback])`. Simply omit these callbacks.
 
-#### How it looks ?
-
-![demo terminal js](https://github.com/hqro/Terminal-JS/blob/master/demo/terminal-js.png?raw=true)
+### Thanks
+Special thanks to [hqro](https://github.com/hqro) for the awesome [react terminal component](https://github.com/hqro/Terminal-JS)!
