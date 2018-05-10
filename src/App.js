@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome';
-import _ from 'lodash';
+import Web3 from 'web3';
 
 import './App.css';
 
@@ -8,44 +8,41 @@ class App extends Component {
   state = {
     value: '',
     output: [],
-    folders: [],
     history: [],
     historyIndex: 0,
   };
 
+  componentDidMount = () => {
+    window.web3 = new Web3(new Web3.providers.HttpProvider('https://ethrpc.coincircle.com'));
+  }
+
   handleChange = ({ target: { value } }) => this.setState({ value });
 
   handleKeyPress = async ({ key }) => {
-    const { output, value, folders, history, historyIndex } = this.state;
+    const { output, value, history, historyIndex } = this.state;
     let outputProcessed = output.concat(
       <strong className="cmd">
         <FontAwesome name="angle-right" />&nbsp;{value}
       </strong>
     );
-    let foldersList = folders;
 
     if (key.includes('Enter')) {
-      if (_.isEqual(value, 'clear') || _.isEqual(value, 'exit')) {
+      console.log(value)
+      if (value === 'clear' || value === 'exit') {
         outputProcessed = [];
-      } else if (value.includes('mkdir')) {
-        foldersList = folders.concat(value.trim().split(' ').slice(1));
-      } else if (value.includes('rm')) {
-        const toRemove = value.trim().split(' ').slice(1);
+      } else if (value.includes('web3')) {
+        var results = []
+        results[0] = eval(value) /* eslint no-eval: "off" */
 
-        toRemove.forEach(name => {
-          const index = foldersList.indexOf(name);
-          if (index !== -1) foldersList.splice(index, 1);
-        });
-      } else if (_.isEqual(value, 'ls')) {
-        const foldersProcessed = folders.length && (
+        const resultsComponent = results.length && (
           <span className="folders">
-            {folders.map((el, index) => (
+            {results.map((el, index) => (
               <span className="folder" key={index}>{el}</span>
             ))}
           </span>
         );
 
-        outputProcessed = outputProcessed.concat(foldersProcessed || []);
+        outputProcessed = outputProcessed.concat(resultsComponent || []);
       } else {
         outputProcessed = outputProcessed.concat(
           <span className="err">
@@ -56,8 +53,7 @@ class App extends Component {
 
       await this.setState({
         value: '',
-        output: outputProcessed.length > 19 ? outputProcessed.slice(-19) : (outputProcessed || output),
-        folders: foldersList || folders,
+        output: (outputProcessed || output),
         history: history.concat(value),
       });
       this.setState({ historyIndex: this.state.history.length - 1 });
@@ -83,8 +79,8 @@ class App extends Component {
 
     return (
       <div className="app">
-        <h1><FontAwesome name="terminal" className="icon" /> Terminal<span>.js</span></h1>
-        <h2>Simple terminal made with React</h2>
+        <h1><FontAwesome name="terminal" className="icon" /> CoinCircle&#39;s Web3<span> web client</span></h1>
+        <h2>Simple terminal made to interact with web3</h2>
 
         <div className="content">
           <div className="terminal">
@@ -102,7 +98,7 @@ class App extends Component {
             </div>
           </div>
         </div>
-        <footer>&copy; 2016 | glarivie@student.42.fr | All rights reserved.</footer>
+        <footer>forked from <a href="https://github.com/hqro/Terminal-JS" target="_blank">github.com&#47;hqro&#47;Terminal&#45;JS</a></footer>
       </div>
     );
   }
