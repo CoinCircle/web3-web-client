@@ -36,11 +36,18 @@ h2 {
   color: #999;
   font-weight: 100;
   font-family: 'Roboto-Mono', monospace;
-  margin-bottom: 35px;
+}
+
+.note {
+  color: #999;
+  font-weight: 100;
+  font-family: 'Roboto-Mono', monospace;
+  font-size: 12px;
 }
 
 .content {
   flex-grow: 1;
+  margin-top: 35px;
 }
 
 .terminal {
@@ -55,11 +62,12 @@ h2 {
   border-radius: 4px 4px 0 0;
   font-size: 14px;
   color: #AAA;
-  width: 42vw;
-  height: 400px;
+  width: 80vw;
+  height: 850px;
+  max-height: 60vh;
   border-bottom: 1px solid rgba(255, 255, 255, .15);
   padding: 10px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .input {
@@ -80,7 +88,7 @@ h2 {
   background-color: #222;
   border-radius: 0 0 4px 4px;
   outline: none;
-  width: 42vw;
+  width: 80vw;
   font-size: 14px;
   padding: 8px 10px 8px 20px;
   border: none;

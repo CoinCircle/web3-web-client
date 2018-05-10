@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome';
 import Web3 from 'web3';
+// import { Promise } from 'es6-promise';
 
 import './App.css';
+
+//const run = expression => {
+  //return new promise((resolve, reject) => {
+    //resolve(eval('(function() {' + expression + '}())')) [> eslint no-eval: "off" <]
+  //})
+//}
 
 class App extends Component {
   state = {
@@ -27,22 +34,35 @@ class App extends Component {
     );
 
     if (key.includes('Enter')) {
-      console.log(value)
       if (value === 'clear' || value === 'exit') {
         outputProcessed = [];
       } else if (value.includes('web3')) {
-        var results = []
-        results[0] = eval(value) /* eslint no-eval: "off" */
+        try {
+          var results = []
+          // results[0] = await run(value)
+          // results[0] = await eval('(function() {' + value + '}())') /* eslint no-eval: "off" */
+          results[0] = await eval( value ) /* eslint no-eval: "off" */
+          results[0] = JSON.stringify(results[0], null, 2)
+          console.log(results)
 
-        const resultsComponent = results.length && (
-          <span className="folders">
-            {results.map((el, index) => (
-              <span className="folder" key={index}>{el}</span>
-            ))}
-          </span>
-        );
+          const resultsComponent = results.length && (
+            <span className="folders">
+              {results.map((el, index) => (
+                <span className="folder" key={index}>{el}</span>
+              ))}
+            </span>
+          );
 
-        outputProcessed = outputProcessed.concat(resultsComponent || []);
+          outputProcessed = outputProcessed.concat(resultsComponent || []);
+
+        } catch (e) {
+          console.log(`err trying ${JSON.stringify(e)}`)
+          outputProcessed = outputProcessed.concat(
+            <span className="err">
+              [error] command not found: {value.split(' ')[0]}
+            </span>
+          );
+        }
       } else {
         outputProcessed = outputProcessed.concat(
           <span className="err">
@@ -57,6 +77,10 @@ class App extends Component {
         history: history.concat(value),
       });
       this.setState({ historyIndex: this.state.history.length - 1 });
+
+      // scroll
+      var objDiv = document.getElementById("output");
+      objDiv.scrollTop = objDiv.scrollHeight;
     } else if (key.includes('ArrowUp')) {
       if (history[historyIndex - 1]) {
         this.setState({
@@ -81,11 +105,12 @@ class App extends Component {
       <div className="app">
         <h1><FontAwesome name="terminal" className="icon" /> CoinCircle&#39;s Web3<span> web client</span></h1>
         <h2>Simple terminal made to interact with web3</h2>
+        <span className="note">note: don&#39;t include callbacks</span>
 
         <div className="content">
           <div className="terminal">
-            <div className="output">
-              {output.map((line, index) => <p key={index}>{line}</p>)}
+            <div id="output" className="output">
+              {output.map((line, index) => <pre key={index}>{line}</pre>)}
             </div>
             <div className="input">
               <FontAwesome name="angle-right" className="icon" />
