@@ -5,12 +5,6 @@ import Web3 from 'web3';
 
 import './App.css';
 
-//const run = expression => {
-  //return new promise((resolve, reject) => {
-    //resolve(eval('(function() {' + expression + '}())')) [> eslint no-eval: "off" <]
-  //})
-//}
-
 class App extends Component {
   state = {
     value: '',
@@ -39,8 +33,6 @@ class App extends Component {
       } else if (value.includes('web3')) {
         try {
           var results = []
-          // results[0] = await run(value)
-          // results[0] = await eval('(function() {' + value + '}())') /* eslint no-eval: "off" */
           results[0] = await eval( value ) /* eslint no-eval: "off" */
           results[0] = JSON.stringify(results[0], null, 2)
           console.log(results)
